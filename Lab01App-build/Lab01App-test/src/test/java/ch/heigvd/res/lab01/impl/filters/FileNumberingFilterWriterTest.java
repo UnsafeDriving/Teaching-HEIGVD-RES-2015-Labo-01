@@ -100,7 +100,7 @@ public class FileNumberingFilterWriterTest {
     writer.write(line);
     Assert.assertEquals(expected, stringWriter.toString());
   }
-  /*
+  
   @Test
   public void itShouldWorkOnWindows() throws IOException {
     String line = "This is line 1\r\nThis is line 2\r\nThis is line 3";
@@ -109,6 +109,6 @@ public class FileNumberingFilterWriterTest {
     FileNumberingFilterWriter writer = new FileNumberingFilterWriter(stringWriter);
     writer.write(line);
     Assert.assertEquals(expected, stringWriter.toString());
-  }*/
+  }
 
 }
