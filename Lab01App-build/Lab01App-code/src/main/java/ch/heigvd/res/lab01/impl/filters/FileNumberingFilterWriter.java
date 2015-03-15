@@ -16,6 +16,8 @@ import java.util.logging.Logger;
  * @author Olivier Liechti
  */
 public class FileNumberingFilterWriter extends FilterWriter {
+    private int i = 1;
+    private boolean first = true;
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
@@ -25,17 +27,72 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+        int positionInitial = off;
+        boolean stop = false;
+        boolean noSeparators = true;
+        String tmp = "";
+        len = len + off;
+        
+        if(first) {
+            tmp = (i++) + "\t";
+            first = false;
+        }
+        
+        /*if(str.length() > len) {
+            len = str.length();
+        }
+        
+        if(off > len) {
+            int tmpLen = len;
+            len = off;
+            off = tmpLen;
+        }*/
+        while((str.substring(positionInitial, len).contains("\n"))&& !stop) {
+            noSeparators=false;
+            for(int character = positionInitial; character < len; character++) {
+                if(str.charAt(character) == '\n') {
+                    
+                    /*if(str.charAt(character) == '\r' && str.charAt(character+1) == '\n') {
+                        tmp += str.substring(positionInitial, character+2) + (i++) + "\t";
+                    
+                        positionInitial = character+2;
+                    }else {*/
+                        tmp += str.substring(positionInitial, character+1) + (i++) + "\t";
+                    
+                        positionInitial = character+1;
+                    //}
+                    
+                    
+                    
+                    if(positionInitial > len) {
+                        stop = true;
+                    }
+                    
+                    break;
+                }
+            }
+        }
+        
+        
+        if(noSeparators  || positionInitial < len) {
+            tmp += str.substring(positionInitial, len);
+        } 
+        
+        super.write(tmp, 0, tmp.length());
+        //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+        super.write(cbuf, off, len);
+        //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+        String value = Character.toString((char) c);
+        this.write(value, 0, 1);
+        //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
 
 }

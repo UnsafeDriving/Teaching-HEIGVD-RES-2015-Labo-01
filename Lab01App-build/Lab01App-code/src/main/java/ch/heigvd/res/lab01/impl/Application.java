@@ -9,6 +9,7 @@ import ch.heigvd.res.lab01.quotes.QuoteClient;
 import ch.heigvd.res.lab01.quotes.Quote;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -125,6 +126,28 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
+      int numberOfTags = quote.getTags().length;
+      String[] tags = quote.getTags();
+      String location = "";
+      for(int indexOfTag = 0; indexOfTag < numberOfTags; indexOfTag++) {
+          location += (tags[indexOfTag]+ "/");
+      }
+      location += filename;
+      
+      try{    
+        // Ouvrir le fichier 
+        // (en append si tu veux écrire à la suite du fichier s'il existe)  
+        FileWriter fw = new FileWriter(location); 
+
+        // Pour chaque client écrire le client courant 
+        fw.write(quote.getQuote());
+        // Fermer le fichier 
+        fw.close();
+      }catch(IOException e){    
+        // On écrit dans le flux d'erreur (et non dans la sortie standard)    
+        // un message d'erreur 
+        System.out.println("Erreur, écriture impossible\n");    
+      } 
     throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
   
@@ -148,7 +171,7 @@ public class Application implements IApplication {
   
   @Override
   public String getAuthorEmail() {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    return "mario.ferreira@heig-vd.ch";
   }
 
   @Override
